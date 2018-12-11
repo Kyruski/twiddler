@@ -5,64 +5,75 @@
     <script src="data_generator.js"></script>
   </head>
   <body>
-    <script>
+  	<div id="grid">
+	    <script>
 
-      $(document).ready(function(){
-        var $body = $('body');
-        $body.html('');
+	      $(document).ready(function(){
+	        var $grid = $('#grid');
+	        $grid.html('');
 
-        function addHashTags(message) {
-        	let words = message.split(' ');
-        	let iterator = function (x) { //if the word starts with a '#', it will add a link to the hashtag page
-        		let word = x;
-        		if (x.startsWith('#')) {
-        			word = '<a href="https://www.twiddler.com/hashtag/' + x.slice(1) + '">' + x + '</a>';
-        		}
-        		return word;
-        	};
-        	return words.map(iterator).join(' ');
-        }
+	        function addHashTags(message) {
+	        	let words = message.split(' ');
+	        	let iterator = function (x) { //if the word starts with a '#', it will add a link to the hashtag page
+	        		let word = x;
+	        		if (x.startsWith('#')) {
+	        			word = '<a href="https://www.twiddler.com/hashtag/' + x.slice(1) + '">' + x + '</a>';
+	        		}
+	        		return word;
+	        	};
+	        	return words.map(iterator).join(' ');
+	        }
 
-        function convertTime(tweetTime) { //grabs the current time and tweet time in milliseconds, and then determines the correct time since the post to display (days, months, years)
-				  const currentTime = new Date().getTime();
-					const difference = currentTime - tweetTime;
-					const second = 1000;
-					const minute = second * 60;
-					const hour = minute * 60;
-					const day = hour * 24;
-					const month = day * 30.42;
-					const year = month * 12;
-					let time = '';
-					if (difference < minute) { //if it is less than 1min in milliseconds
-						time = '' + Math.round(difference / second) + 's ago';
-					} else if (difference < hour) { //as above but for hours
-						time = '' + Math.round(difference / minute) + 'min ago';
-					} else if (difference < day) {
-						time = '' + Math.round(difference / hour) + 'h ago';
-					} else if (difference < month) {
-						time = '' + Math.round(difference / day) + 'd ago';
-					} else if (difference < year) {
-						time = '' + Math.round(difference / hour) + 'mo ago';
-					} else {
-						time = '' + Math.round(difference / hour) + 'yr ago';
-					}
-					return time;
-        }
+	        function convertTime(tweetTime) { //grabs the current time and tweet time in milliseconds, and then determines the correct time since the post to display (days, months, years)
+					  const currentTime = new Date().getTime();
+						const difference = currentTime - tweetTime;
+						const second = 1000;
+						const minute = second * 60;
+						const hour = minute * 60;
+						const day = hour * 24;
+						const month = day * 30.42;
+						const year = month * 12;
+						let time = '';
+						if (difference < minute) { //if it is less than 1min in milliseconds
+							time = '' + Math.round(difference / second) + 's ago';
+						} else if (difference < hour) { //as above but for hours
+							time = '' + Math.round(difference / minute) + 'min ago';
+						} else if (difference < day) {
+							time = '' + Math.round(difference / hour) + 'h ago';
+						} else if (difference < month) {
+							time = '' + Math.round(difference / day) + 'd ago';
+						} else if (difference < year) {
+							time = '' + Math.round(difference / hour) + 'mo ago';
+						} else {
+							time = '' + Math.round(difference / hour) + 'yr ago';
+						}
+						return time;
+	        }
 
-        var index = streams.home.length - 1;
-        while(index >= 0){
-          var tweet = streams.home[index];
-          var timestamp = convertTime(tweet.created_at);
-          var message = addHashTags(tweet.message);
-          var ahref = '<a href="https://www.twiddler.com/' + tweet.user + '">@' + tweet.user + '</a>';
-          var $tweet = $('<div class="tweet"></div>'); //give a cl"ass to these, maybe class tweet?
-          $tweet.html('<div class="poster-username">' + ahref + ' - <span class="timestamp">' + timestamp + '</span></div><div class="tweet-message">' + message + ''); //add hashtags + timestamp + ahref for user
-          $tweet.appendTo($body); //append this to a specific place in the body. Then have a button that clears that text and reloads tweets.
-          index -= 1;
-        }
+	        function makeTweetTimeline() {
+	        	var $button = $('<button type="button">Reload tweets!</button>');
+	        	$button.appendTo($grid);
+	        	var index = streams.home.length - 1;
+  	        while(index >= 0){
+  	          var tweet = streams.home[index];
+  	          var timestamp = convertTime(tweet.created_at);
+  	          var message = addHashTags(tweet.message);
+  	          var ahref = '<a href="https://www.twiddler.com/' + tweet.user + '">@' + tweet.user + '</a>';
+  	          var $tweet = $('<div class="tweet"></div>'); //give a class to these, maybe class tweet?
+  	          $tweet.html('<div class="poster-username">' + ahref + ' - <span class="timestamp">' + timestamp + '</span></div><div class="tweet-message">' + message + ''); //add hashtags + timestamp + ahref for user
+  	          $tweet.appendTo($grid); //append this to a specific place in the grid area. Then have a button that clears that text and reloads tweets.
+  	          index -= 1;
+  	        }
+	        }
+	        $grid.click(function() {
+	        	$grid.empty();
+	        	makeTweetTimeline();
+	        })
+	        makeTweetTimeline();
 
-      });
+	      });
 
-    </script>
+	    </script>
+	  </div>
   </body>
 </html>
