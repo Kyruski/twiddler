@@ -11,7 +11,21 @@
         var $body = $('body');
         $body.html('');
 
-        function convertTime(tweetTime) {
+        function addHashTags(message) {
+        	let words = message.split(' ');
+        	console.log(words);
+        	let iterator = function (x) { //if the word starts with a '#', it will add a link to the hashtag page
+        		let word = x;
+        		if (x.startsWith('#')) {
+        			word = '<a href="https://www.twiddler.com/hashtag/' + x.slice(1) + '">' + x + '</a>';
+        		}
+        		console.log(word);
+        		return word;
+        	};
+        	return words.map(iterator).join(' ');
+        }
+
+        function convertTime(tweetTime) { //grabs the current time and tweet time in milliseconds, and then determines the correct time since the post to display (days, months, years)
 				  const currentTime = new Date().getTime();
 					const difference = currentTime - tweetTime;
 					const second = 1000;
@@ -41,9 +55,10 @@
         while(index >= 0){
           var tweet = streams.home[index];
           var timestamp = convertTime(tweet.created_at);
+          var message = addHashTags(tweet.message);
           var ahref = '<a href="https://www.twiddler.com/' + tweet.user + '">@' + tweet.user + '</a>';
           var $tweet = $('<div class="tweet"></div>'); //give a cl"ass to these, maybe class tweet?
-          $tweet.html('<div class="poster-username">' + ahref + ' - <span class="timestamp">' + timestamp + '</span></div><div class="tweet-message">' + tweet.message + ''); //add hashtags + timestamp + ahref for user
+          $tweet.html('<div class="poster-username">' + ahref + ' - <span class="timestamp">' + timestamp + '</span></div><div class="tweet-message">' + message + ''); //add hashtags + timestamp + ahref for user
           $tweet.appendTo($body); //append this to a specific place in the body. Then have a button that clears that text and reloads tweets.
           index -= 1;
         }
