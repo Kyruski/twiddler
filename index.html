@@ -14,9 +14,11 @@
         var index = streams.home.length - 1;
         while(index >= 0){
           var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
-          $tweet.appendTo($body);
+          //var secondsSincePost = (Date().getTime() - tweet.created_at) / 1000;
+          var ahref = '<a href="https://www.twiddler.com/' + tweet.user + '">@' + tweet.user + '</a>';
+          var $tweet = $('<div class="tweet"></div>'); //give a cl"ass to these, maybe class tweet?
+          $tweet.html(ahref + ': ' + tweet.message + ' <span class="timestamp">' + tweet.created_at /*secondsSincePost*/ + '</span>'); //add hashtags + timestamp + ahref for user
+          $tweet.appendTo($body); //append this to a specific place in the body. Then have a button that clears that text and reloads tweets.
           index -= 1;
         }
 
