@@ -19,7 +19,6 @@
         		if (x.startsWith('#')) {
         			word = '<a href="https://www.twiddler.com/hashtag/' + x.slice(1) + '">' + x + '</a>';
         		}
-        		console.log(word);
         		return word;
         	};
         	return words.map(iterator).join(' ');
