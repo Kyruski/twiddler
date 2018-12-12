@@ -71,8 +71,7 @@
 	        		var tweet = userLocation[index];
   	          var timestamp = convertTime(tweet.created_at);
   	          var message = addHashTags(tweet.message);
-  	          // var ahref = '<a href="https://www.twiddler.com/' + tweet.user + '?user=' + tweet.user + '">@' + tweet.user + '</a>';
-  	          var $tweet = $('<div class="tweet grid-item"></div>');
+  	          var $tweet = $('<div class="grid-item"></div>');
   	          $tweet.html('<div class="tweet-message">' + message + ' - <span class="timestamp">' + timestamp + '</span>');
   	          $tweet.appendTo($tweetarea);	
   	          index -= 1;
@@ -86,7 +85,7 @@
 	  	          var timestamp = convertTime(tweet.created_at);
 	  	          var message = addHashTags(tweet.message);
 	  	          var button = '<button type="button" class="user-button" id="' + tweet.user + '">@' + tweet.user + '</button>';
-	  	          var $tweet = $('<div class="tweet grid-item"></div>'); //give a class to these, maybe class tweet?
+	  	          var $tweet = $('<div class="grid-item"></div>'); //give a class to these, maybe class tweet?
 	  	          $tweet.html('<div class="poster-username">' + button + ' - <span class="timestamp">' + timestamp + '</span></div><div class="tweet-message">' + message + ''); //add hashtags + timestamp + ahref for user
 	  	          $tweet.appendTo($tweetarea); //append this to a specific place in the grid area. Then have a button that clears that text and reloads tweets.
 	  	          index -= 1;
@@ -100,7 +99,7 @@
 		        	makeTweetTimeline();
 		        });
 
-						$('.user-button').click(function() { //remakes the tweet area to update
+						$('.user-button').click(function() { //pushes the selected user's feed to the front
 		        	$tweetarea.empty();
 		        	makeUserTimeline($(this).attr("id"));
 	     		   });
