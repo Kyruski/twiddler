@@ -12,7 +12,7 @@
 	    <img id="logo" src="logo.png">
     	<div class="left-side">Left Side Info</div>
     	<div class="right-side">Right Side Info</div>
-			<button type="button" class="button">Reload Twiddles!</button>
+			<button type="button" class="button">Update Twiddle Feed!</button>
 
   		<div id="tweet-area">
 		    <script>
@@ -63,16 +63,13 @@
 	        function makeUserTimeline(user) {
 	        	var userLocation = streams.users[[user]];
 	        	var index = userLocation.length - 1;
-	        	var $returnButton = $('<button type="button" class="button returnButton">Return to your home feed</button>');
-	        	$returnButton.appendTo($tweetarea);	
-	        	var $username = $('<div class="personal-user-feed">' + user + '\'s Feed</div>');
-	        	$username.appendTo($tweetarea);	
+	        	$('.button').html('Return To Your Twiddle Feed!');
 	        	while (index >= 0) {
 	        		var tweet = userLocation[index];
   	          var timestamp = convertTime(tweet.created_at);
   	          var message = addHashTags(tweet.message);
-  	          var $tweet = $('<div class="grid-item"></div>');
-  	          $tweet.html('<div class="tweet-message">' + message + ' - <span class="timestamp">' + timestamp + '</span>');
+  	          var $tweet = $('<div class="grid-item"></div>'); //give a class to these, maybe class tweet?
+  	          $tweet.html('<div class="poster-username">@' + tweet.user + '<span class="timestamp"> - ' + timestamp + '</span></div><div class="tweet-message">' + message + ''); //add hashtags + timestamp + ahref for user
   	          $tweet.appendTo($tweetarea);	
   	          index -= 1;
   	        }
@@ -80,13 +77,14 @@
 
 		        function makeTweetTimeline() {
 		        	var index = streams.home.length - 1;
+		        	$('.button').html('Update Twiddle Feed!');
 	  	        while(index >= 0){
 	  	          var tweet = streams.home[index];
 	  	          var timestamp = convertTime(tweet.created_at);
 	  	          var message = addHashTags(tweet.message);
 	  	          var button = '<button type="button" class="user-button" id="' + tweet.user + '">@' + tweet.user + '</button>';
 	  	          var $tweet = $('<div class="grid-item"></div>'); //give a class to these, maybe class tweet?
-	  	          $tweet.html('<div class="poster-username">' + button + ' - <span class="timestamp">' + timestamp + '</span></div><div class="tweet-message">' + message + ''); //add hashtags + timestamp + ahref for user
+	  	          $tweet.html('<div class="poster-username">' + button + '<span class="timestamp"> - ' + timestamp + '</span></div><div class="tweet-message">' + message + ''); //add hashtags + timestamp + ahref for user
 	  	          $tweet.appendTo($tweetarea); //append this to a specific place in the grid area. Then have a button that clears that text and reloads tweets.
 	  	          index -= 1;
 	  	        }
@@ -94,12 +92,12 @@
 						
 						makeTweetTimeline();
 
-		        $('.button').click(function() { //remakes the tweet area to update
+		        $(document).on('click', '.button', function() { //remakes the tweet area to update
 		        	$tweetarea.empty();
 		        	makeTweetTimeline();
 		        });
 
-						$('.user-button').click(function() { //pushes the selected user's feed to the front
+						$(document).on('click', '.user-button', function() { //pushes the selected user's feed to the front
 		        	$tweetarea.empty();
 		        	makeUserTimeline($(this).attr("id"));
 	     		   });
