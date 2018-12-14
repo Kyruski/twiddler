@@ -1,98 +1,98 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<script src="jquery.js"></script>
-		<script src="data_generator.js"></script>
-		<link rel="stylesheet" type="text/css" href="reset.css">
-		<link rel="stylesheet" type="text/css" href="style.css">
-		<title>Twiddler</title>
-	</head>
-	<body>
-		<div id="grid">
-			<img id="logo" src="logo.png">
-			<div class="left-side">Left Side Info</div>
-			<div class="right-side">Right Side Info</div>
-			<button type="button" class="button">Update Twiddle Feed!</button>
+  <head>
+    <script src="jquery.js"></script>
+    <script src="data_generator.js"></script>
+    <link rel="stylesheet" type="text/css" href="reset.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Twiddler</title>
+  </head>
+  <body>
+    <div id="grid">
+      <img id="logo" src="logo.png">
+      <div class="left-side">Left Side Info</div>
+      <div class="right-side">Right Side Info</div>
+      <button type="button" class="button">Update Twiddle Feed!</button>
 
-			<div id="tweet-area">
-				<script>
-					$(document).ready(function(){
-						var $tweetarea = $('#tweet-area');
-						$tweetarea.html('');
+      <div id="tweet-area">
+        <script>
+          $(document).ready(function(){
+            var $tweetarea = $('#tweet-area');
+            $tweetarea.html('');
 
-						function addHashTags(message) {
-							let words = message.split(' ');
-							let iterator = function (x) { //if the word starts with a '#', it will add a link to the hashtag page
-								let word = x;
-								if (x.startsWith('#')) {
-									word = '<a href="https://www.twiddler.com/hashtag/' + x.slice(1) + '">' + x + '</a>';
-								}
-								return word;
-							};
-							return words.map(iterator).join(' ');
-						}
+            function addHashTags(message) {
+              let words = message.split(' ');
+              let iterator = function (x) { //if the word starts with a '#', it will add a link to the hashtag page
+                let word = x;
+                if (x.startsWith('#')) {
+                  word = '<a href="https://www.twiddler.com/hashtag/' + x.slice(1) + '">' + x + '</a>';
+                }
+                return word;
+              };
+              return words.map(iterator).join(' ');
+            }
 
-						function convertTime(tweetTime) { //grabs the current time and tweet time in milliseconds, and then determines the correct time since the post to display (days, months, years)
-							const currentTime = new Date().getTime();
-							const difference = currentTime - tweetTime;
-							const second = 1000;
-							const minute = second * 60;
-							const hour = minute * 60;
-							const day = hour * 24;
-							const month = day * 30.42;
-							const year = month * 12;
-							let time = '';
-							if (difference < minute) { //if it is less than 1min in milliseconds
-								time = '' + Math.round(difference / second) + 's ago';
-							} else if (difference < hour) { //as above but for hours
-								time = '' + Math.round(difference / minute) + 'min ago';
-							} else if (difference < day) {
-								time = '' + Math.round(difference / hour) + 'h ago';
-							} else if (difference < month) {
-								time = '' + Math.round(difference / day) + 'd ago';
-							} else if (difference < year) {
-								time = '' + Math.round(difference / hour) + 'mo ago';
-							} else {
-								time = '' + Math.round(difference / hour) + 'yr ago';
-							}
-							return time;
-						} 
+            function convertTime(tweetTime) { //grabs the current time and tweet time in milliseconds, and then determines the correct time since the post to display (days, months, years)
+              const currentTime = new Date().getTime();
+              const difference = currentTime - tweetTime;
+              const second = 1000;
+              const minute = second * 60;
+              const hour = minute * 60;
+              const day = hour * 24;
+              const month = day * 30.42;
+              const year = month * 12;
+              let time = '';
+              if (difference < minute) { //if it is less than 1min in milliseconds
+                time = '' + Math.round(difference / second) + 's ago';
+              } else if (difference < hour) { //as above but for hours
+                time = '' + Math.round(difference / minute) + 'min ago';
+              } else if (difference < day) {
+                time = '' + Math.round(difference / hour) + 'h ago';
+              } else if (difference < month) {
+                time = '' + Math.round(difference / day) + 'd ago';
+              } else if (difference < year) {
+                time = '' + Math.round(difference / hour) + 'mo ago';
+              } else {
+                time = '' + Math.round(difference / hour) + 'yr ago';
+              }
+              return time;
+            } 
 
-						function makeTweetTimeline(user) {
-							var streamLocation;
-							streamLocation = (!user) ? streams.home : streams.users[[user]];
-							var index = streamLocation.length - 1;
-							while(index >= 0){
-								var tweet = streamLocation[index];
-								var timestamp = convertTime(tweet.created_at);
-								var message = addHashTags(tweet.message);
-								var button = '<button type="button" class="user-button" id="' + tweet.user + '">@' + tweet.user + '</button>';
-								var $tweet = $('<div class="grid-item"></div>'); //give a class to these, maybe class tweet?
-								$tweet.html('<div class="poster-username">' + button + '<span class="timestamp"> - ' + timestamp + '</span></div><div class="tweet-message">' + message + ''); //add hashtags + timestamp + ahref for user
-								$tweet.appendTo($tweetarea); //append this to a specific place in the grid area. Then have a button that clears that text and reloads tweets.
-								index -= 1;
-							}
-						}
-						
-						makeTweetTimeline();
+            function makeTweetTimeline(user) {
+              var streamLocation;
+              streamLocation = (!user) ? streams.home : streams.users[[user]];
+              var index = streamLocation.length - 1;
+              while(index >= 0){
+                var tweet = streamLocation[index];
+                var timestamp = convertTime(tweet.created_at);
+                var message = addHashTags(tweet.message);
+                var button = '<button type="button" class="user-button" id="' + tweet.user + '">@' + tweet.user + '</button>';
+                var $tweet = $('<div class="grid-item"></div>'); //give a class to these, maybe class tweet?
+                $tweet.html('<div class="poster-username">' + button + '<span class="timestamp"> - ' + timestamp + '</span></div><div class="tweet-message">' + message + ''); //add hashtags + timestamp + ahref for user
+                $tweet.appendTo($tweetarea); //append this to a specific place in the grid area. Then have a button that clears that text and reloads tweets.
+                index -= 1;
+              }
+            }
+            
+            makeTweetTimeline();
 
-						$(document).on('click', '.button', function() { //remakes the tweet area to update
-							$tweetarea.empty();
-							makeTweetTimeline();
-							$('.button').html('Update Twiddler Feed!');
-							document.title = 'Twiddler';
-						});
+            $(document).on('click', '.button', function() { //remakes the tweet area to update
+              $tweetarea.empty();
+              makeTweetTimeline();
+              $('.button').html('Update Twiddler Feed!');
+              document.title = 'Twiddler';
+            });
 
-						$(document).on('click', '.user-button', function() { //pushes the selected user's feed to the front
-							$tweetarea.empty();
-							let user = $(this).attr("id");
-							makeTweetTimeline(user);
-							$('.button').html('Return To Your Twiddler Feed!');
-							document.title = '' + user + '\'s Twiddles';
-						});
-					});
-				</script>
-			</div>
-		</div>
-	</body>
+            $(document).on('click', '.user-button', function() { //pushes the selected user's feed to the front
+              $tweetarea.empty();
+              let user = $(this).attr("id");
+              makeTweetTimeline(user);
+              $('.button').html('Return To Your Twiddler Feed!');
+              document.title = '' + user + '\'s Twiddles';
+            });
+          });
+        </script>
+      </div>
+    </div>
+  </body>
 </html>
