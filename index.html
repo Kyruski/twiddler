@@ -104,15 +104,18 @@
               document.title = '' + user + '\'s Twiddles';
             });
 
-            $(document).on('click', '#submit-twiddle', function() { //pushes the selected user's feed to the front
+            $(document).on('click', '#submit-twiddle', function() {
               let user = $('#twiddle-usrname-submit').val();
               let message = $('#twiddle-message-submit').val();
+              if (user === '' || message === '') { return; }
               if (!streams.users[[user]]) { streams.users[[user]] = []; }
               postTwiddle(message, user);
               $tweetarea.empty();
               makeTweetTimeline();
               $('.button').html('Update Twiddler Feed!');
               document.title = 'Twiddler';
+              $('#twiddle-usrname-submit').val('');
+              $('#twiddle-message-submit').val('');
             });
           });
         </script>
