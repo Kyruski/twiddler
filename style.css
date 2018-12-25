@@ -8,10 +8,39 @@ body {
 
 #grid {
 	display: grid;
-	grid-template: 200px 50px repeat(3, 1fr) / repeat(9, 1fr);
+	grid-template: 200px 75px 50px repeat(3, 1fr) / repeat(9, 1fr);
 	grid-auto-rows: auto;
 	grid-gap: 5px;
 	max-height: 90vh
+}
+
+form {
+	grid-row: 2 / span 1;
+	grid-column: 3 / span 5;
+	display: grid;
+	grid-template: 100% / 70% 20% 10%;
+	width: 100%;
+}
+
+form>input {
+	display: inline-block;
+	position: relative;
+	height: 80%;
+	top: 10%;
+	border-radius: 15px;
+	padding-left: 20px;
+}
+
+#twiddle-message-submit {
+	grid-column: 1 / span 1;
+}
+
+#twiddle-usrname-submit {
+	grid-column: 2 / span 1;
+}
+
+#submit-twiddle {
+	grid-column: 3 / span 1;
 }
 
 #logo {
@@ -22,7 +51,7 @@ body {
 .button {
 	font-size: 18px;
 	color: #3EA4FF;
-	grid-row: 2;
+	grid-row: 3;
 	grid-column: 3 / span 5;
 	border: 1px solid #4EAEC6;
 	border-radius: 10px;
@@ -55,7 +84,7 @@ body {
 	border: 1px solid #4EAEC6;
 	border-radius: 10px;
 	grid-column: 3 / span 5;
-	grid-row: 3 / span 3;
+	grid-row: 4 / span 3;
 	display: grid;
 	grid-template-columns: 1fr;
 	grid-auto-rows: auto;
